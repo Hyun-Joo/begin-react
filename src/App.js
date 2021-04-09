@@ -8,6 +8,7 @@ function App() {
         email: ''
     });
     const { username, email } = inputs;
+
     const onChange = e => {
         const { name, value } = e.target;
         setInputs({
@@ -15,21 +16,25 @@ function App() {
             [name]: value
         });
     };
+
     const [users, setUsers] = useState([
         {
             id: 1,
             username: 'hyunjoo',
-            email: 'dlguswn714@gmail.com'
+            email: 'dlguswn714@gmail.com',
+            active: true
         },
         {
             id: 2,
             username: 'tester',
-            email: 'tester@example.com'
+            email: 'tester@example.com',
+            active: false
         },
         {
             id: 3,
             username: 'grace',
-            email: 'gracekelly@gmail.com'
+            email: 'gracekelly@gmail.com',
+            active: false
         }
     ]);
 
@@ -50,8 +55,17 @@ function App() {
         //console.log(nextId.current); // 4
         nextId.current += 1;
     };
+
     const onRemove = id => {
         setUsers(users.filter(user => user.id !== id));
+    };
+
+    const onToggle = id => {
+        setUsers(users.map(
+            user => user.id === id
+                ? { ...user, active: !user.active }
+                : user
+        ));
     };
 
     return (
@@ -61,7 +75,7 @@ function App() {
                         onChange={onChange}
                         onCreate={onCreate}
             />
-            <UserList users={users} onRemove={onRemove} />
+            <UserList users={users} onRemove={onRemove} onToggle={onToggle} />
         </>
     );
 }
