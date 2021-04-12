@@ -1,7 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 function User({ user, onRemove, onToggle }){
     const { username, email, id, active } = user;
+    //mounted
+    useEffect(() => {
+        console.log(user);
+        //unmounted (클리너 함수)
+        //return () => {}
+    }, [user]); //deps(의존되는 값)
     return (
         <div>
             <b style={{
