@@ -1,9 +1,9 @@
-import React, { useRef, useReducer, useMemo, useCallback } from 'react';
+import React, {useRef, useReducer, useMemo, useCallback} from 'react';
 // useMemo, useCallback, React.memo : 정말 최적화가 필요할 때만 사용하는 게 좋음
 import UserList from "./UserList";
 import CreateUser from "./CreateUser";
 
-function countActiveUsers(users){
+function countActiveUsers(users) {
     console.log('활성 사용자 수를 세는 중...');
     return users.filter(user => user.active).length;
 }
@@ -35,8 +35,8 @@ const initialState = {
     ]
 }
 
-function reducer(state, action){
-    switch (action.type){
+function reducer(state, action) {
+    switch (action.type) {
         case 'CHANGE_INPUT':
             return {
                 ...state,
@@ -55,7 +55,7 @@ function reducer(state, action){
                 ...state,
                 users: state.users.map(user =>
                     user.id === action.id
-                        ? { ...user, active: !user.active }
+                        ? {...user, active: !user.active}
                         : user
                 )
             }
@@ -72,11 +72,11 @@ function reducer(state, action){
 function App() {
     const [state, dispatch] = useReducer(reducer, initialState);
     const nextId = useRef(4);
-    const { users } = state;
-    const { username, email } = state.inputs;
+    const {users} = state;
+    const {username, email} = state.inputs;
 
     const onChange = useCallback(e => {
-        const { name, value } = e.target;
+        const {name, value} = e.target;
         dispatch({
             type: 'CHANGE_INPUT',
             name,
@@ -120,7 +120,7 @@ function App() {
                 onChange={onChange}
                 onCreate={onCreate}
             />
-            <UserList users={users} onToggle={onToggle} onRemove={onRemove} />
+            <UserList users={users} onToggle={onToggle} onRemove={onRemove}/>
             <div>활성 사용자 수: {count}명</div>
         </>
     );
