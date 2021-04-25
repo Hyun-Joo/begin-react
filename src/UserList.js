@@ -1,7 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
+import { UserDispatch } from "./App";
 
-const User = React.memo(function User({ user, onRemove, onToggle }){
+const User = React.memo(function User({ user }){
     const { username, email, id, active } = user;
+    const dispatch = useContext(UserDispatch);
     //mounted
     useEffect(() => {
         console.log(user);
@@ -14,7 +16,7 @@ const User = React.memo(function User({ user, onRemove, onToggle }){
                 color: active ? 'green' : 'black',
                 cursor: 'pointer'
                 }}
-               onClick={() => onToggle(id)}
+               onClick={() => dispatch({ type: 'TOGGLE_USER', id })}
             >
                 {username}
             </b>
@@ -22,12 +24,12 @@ const User = React.memo(function User({ user, onRemove, onToggle }){
             <span>({email})</span>
             &nbsp;
             {/*onRemove(id)로 하면 컴포넌트가 렌더링될 시 onRemove 호출, 함수를 호출하는 함수를 넣어줘야 함*/}
-            <button onClick={() => onRemove(id)}>삭제</button>
+            <button onClick={() =>  dispatch({ type: 'REMOVE_USER', id })}>삭제</button>
         </div>
     )
 });
 
-function UserList({ users, onRemove, onToggle }){
+function UserList({ users }){
     return (
         <div>
             {
@@ -35,8 +37,6 @@ function UserList({ users, onRemove, onToggle }){
                         <User
                             user={user}
                             key={user.id}
-                            onRemove={onRemove}
-                            onToggle={onToggle}
                         />
                     )
                 )
