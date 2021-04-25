@@ -1,8 +1,11 @@
 import React, {useRef, useReducer, useMemo, useCallback} from 'react';
 // useMemo, useCallback, React.memo : 정말 최적화가 필요할 때만 사용하는 게 좋음
+import produce from 'immer';
 import UserList from "./UserList";
 import CreateUser from "./CreateUser";
 import useInputs from "./js/useInputs";
+
+//window.produce = produce;
 
 function countActiveUsers(users) {
     console.log('활성 사용자 수를 세는 중...');
@@ -39,20 +42,32 @@ function reducer(state, action) {
                 inputs: initialState.inputs,
                 users: state.users.concat(action.user)
             };
+            // return produce(state, draft => {
+            //     draft.users.push(action.user);
+            // });
         case 'TOGGLE_USER':
-            return {
-                ...state,
-                users: state.users.map(user =>
-                    user.id === action.id
-                        ? {...user, active: !user.active}
-                        : user
-                )
-            }
+            //이미 코드가 깔끔할 경우 굳이 immer를 적용할 필요가 없음
+            return produce(state, draft => {
+                const user = draft.users.find(user => user.id === action.id);
+                user.active = !user.active;
+            });
+            // return {
+            //     ...state,
+            //     users: state.users.map(user =>
+            //         user.id === action.id
+            //             ? {...user, active: !user.active}
+            //             : user
+            //     )
+            // }
         case 'REMOVE_USER':
             return {
                 ...state,
                 users: state.users.filter(user => user.id !== action.id)
             }
+            // return produce(state, draft => {
+            //     const index = draft.users.findIndex(user => user.id === action.id);
+            //     draft.users.splice(index, 1);
+            // });
         default:
             return state;
     }
