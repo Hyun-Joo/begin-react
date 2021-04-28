@@ -2,13 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import Hello from "./Hello";
+import Counter from "./Counter";
 
 ReactDOM.render(
   // <React.StrictMode>
   //   <App />
   // </React.StrictMode>,
-    <Hello name="react" isSpecial />,
+    <Counter />,
   document.getElementById('root')
 );
 
